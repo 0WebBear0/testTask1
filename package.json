@@ -1,0 +1,52 @@
+{
+  "name": "form-pdf",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue"
+  },
+  "dependencies": {
+    "@coreui/coreui": "^4.2.6",
+    "@coreui/vue": "^4.7.0",
+    "@vuelidate/core": "^2.0.0",
+    "@vuelidate/validators": "^2.0.0",
+    "bootstrap": "^5.2.3",
+    "pdfmake": "^0.2.7",
+    "pinia": "^2.0.32",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.0",
+    "vue-eslint-parser": "^9.1.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "plugin:prettier/recommended",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  }
+}
