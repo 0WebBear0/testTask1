@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 
-export const form = defineStore('counter', {
+export const useFormStore = defineStore('counter', {
     state: () => ({
         form: [{},{},{}],
     }),
     getters: {
-        getForm(state) {
+        getForm: (state) => {
             const helperObject = {}
             for (let i = 0; i < state.form.length; i++) {
+                console.log("test")
                 Object.assign(helperObject, state.form[i])
             }
             return helperObject

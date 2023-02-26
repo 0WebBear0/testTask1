@@ -51,8 +51,9 @@
             id="UploadLogo"
             accept="image/*"
             label="Загрузите логотип компании"
-            @input="v$.uploadLogo.$touch"
             v-model.trim="state.uploadLogo"
+            @change="v$.uploadLogo.$touch"
+            @input="addNormalImg"
             :valid="v$.uploadLogo.$dirty && !v$.uploadLogo.$error"
             :invalid="v$.uploadLogo.$dirty && v$.uploadLogo.$error"
         />
@@ -62,11 +63,12 @@
 <script setup>
 import {CForm, CFormInput} from "@coreui/vue";
 import useVuelidate from "@vuelidate/core";
-import {reactive, watch} from "vue";
+import {reactive, ref, watch} from "vue";
 import {required} from "@vuelidate/validators";
-import {form} from "../store/form.js";
+import {useFormStore} from "../stores/form.js";
+import getFileBlob from "../composables/getFileBlob.js";
 
-const { AddOrChangePartForm } = form()
+const { AddOrChangePartForm } = useFormStore()
 
 const emit = defineEmits(['isValid'])
 
@@ -78,6 +80,10 @@ const state = reactive({
     serviceName: '',
     costOfWork: '',
     uploadLogo: '',
+})
+
+const blobs = reactive({
+    uploadLogoBlob: null
 })
 
 //Правила валидации
@@ -93,11 +99,22 @@ const rules = {
 //Валидация объектов
 const v$ = useVuelidate(rules, state)
 
-//Проверка на валидность всей формы этого компонента
+//Преобразование изображений в Blob формат
+const addNormalImg = (event) => {
+    // v$._value.uploadLogo.$touch(event)
+    getFileBlob(event).then((data)=>{
+        blobs.uploadLogoBlob = data
+        const copyState = state
+        AddOrChangePartForm(0, Object.assign(copyState, blobs))
+    })
+}
+
+//Проверка на валидность всей формы этого компонента и запись в state
 watch(v$, ()=>{
     v$._value.$forceUpdate
     if (!v$._value.$invalid) {
-        AddOrChangePartForm(0, state)
+        const copyState = state
+        AddOrChangePartForm(0, Object.assign(copyState, blobs))
         emit('isValid', true)
     }
 })

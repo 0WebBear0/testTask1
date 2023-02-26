@@ -107,6 +107,7 @@
             label="Загрузка подписи заказчика"
             v-model.trim="state.uploadSignatureClient"
             @change="v$.uploadSignatureClient.$touch"
+            @input="addNormalImgSignature"
             :valid="v$.uploadSignatureClient.$dirty && !v$.uploadSignatureClient.$error"
             :invalid="v$.uploadSignatureClient.$dirty && v$.uploadSignatureClient.$error"
         />
@@ -117,6 +118,7 @@
             label="Загрузка печати заказчика"
             v-model.trim="state.uploadSealClient"
             @change="v$.uploadSealClient.$touch"
+            @input="addNormalImgSeal"
             :valid="v$.uploadSealClient.$dirty && !v$.uploadSealClient.$error"
             :invalid="v$.uploadSealClient.$dirty && v$.uploadSealClient.$error"
         />
@@ -128,9 +130,10 @@ import {CForm, CFormInput} from "@coreui/vue";
 import {reactive, watch} from "vue";
 import {email, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import {form} from "../store/form.js";
+import {useFormStore} from "../stores/form.js";
+import getFileBlob from "../composables/getFileBlob.js";
 
-const { AddOrChangePartForm } = form()
+const { AddOrChangePartForm } = useFormStore()
 
 const emit = defineEmits(['isValid'])
 //Валидируемые объекты
@@ -148,6 +151,11 @@ const state = reactive({
     nameClient: '',
     uploadSignatureClient: '',
     uploadSealClient: '',
+})
+
+const blobs = reactive({
+    uploadSignatureClientBlob: null,
+    uploadSealClientBlob: null,
 })
 
 //Правила валидации
@@ -169,12 +177,28 @@ const rules = {
 //Валидация объектов
 const v$ = useVuelidate(rules, state)
 
-//Проверка на валидность всей формы этого компонента
+//Преобразование изображений в Blob формат
+const addNormalImgSeal = (event) => {
+    getFileBlob(event).then((data)=>{
+        blobs.uploadSealClientBlob = data
+        const copyState = state
+        AddOrChangePartForm(2, Object.assign(copyState, blobs))
+    })
+}
+const addNormalImgSignature = (event) => {
+    getFileBlob(event).then((data)=>{
+        blobs.uploadSignatureClientBlob = data
+        const copyState = state
+        AddOrChangePartForm(2, Object.assign(copyState, blobs))
+    })
+}
+
+
+//Проверка на валидность всей формы этого компонента и запись в state
 watch(v$, () => {
-    console.log('a')
     v$._value.$forceUpdate
     if (!v$._value.$invalid) {
-        AddOrChangePartForm(0, state)
+        AddOrChangePartForm(2, Object.assign(state, blobs))
         emit('isValid', true)
     }
 })
