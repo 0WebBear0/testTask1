@@ -1,16 +1,15 @@
 <template>
     <CForm class="align-items-start form-block">
-        <InputWithDadata v-model="state.actNumber" :props-data="{name: 'address'}" :props-data-name="{valid: v$.actNumber}"/>
-<!--        <CFormInput-->
-<!--            name="vue-dadata-input"-->
-<!--            id="ActNumber"-->
-<!--            label="Номер акта"-->
-<!--            placeholder="12665"-->
-<!--            v-model.trim="state.actNumber"-->
-<!--            @change="v$.actNumber.$touch"-->
-<!--            :valid="v$.actNumber.$dirty && !v$.actNumber.$error"-->
-<!--            :invalid="v$.actNumber.$dirty && v$.actNumber.$error"-->
-<!--        />-->
+        <CFormInput
+            name="vue-dadata-input"
+            id="ActNumber"
+            label="Номер акта"
+            placeholder="12665"
+            v-model.trim="state.actNumber"
+            @change="v$.actNumber.$touch"
+            :valid="v$.actNumber.$dirty && !v$.actNumber.$error"
+            :invalid="v$.actNumber.$dirty && v$.actNumber.$error"
+        />
         <CFormInput
             type="date"
             id="DateOfSigning"
@@ -69,7 +68,6 @@ import { onMounted, reactive, watch } from "vue"
 import { required } from "@vuelidate/validators"
 import { useFormStore } from "../store.js"
 import getFileBlob from "../composables/getFileBlob.js"
-import InputWithDadata from "../../../shared/UI/InputWithDadata.vue"
 
 const { AddOrChangePartForm } = useFormStore()
 
@@ -115,10 +113,7 @@ const addNormalImg = (event) => {
 
 //Проверка на валидность всей формы этого компонента и запись в state
 watch(v$, () => {
-  // validationStyle()
   console.log("-------------")
-  // console.log(v$._value.actNumber.$dirty)
-  // console.log(v$._value.actNumber.$invalid)
     v$._value.$forceUpdate
     if (!v$._value.$invalid) {
         const copyState = state

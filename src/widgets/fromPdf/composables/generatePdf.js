@@ -21,7 +21,8 @@ const docDefinition = () => {
             content: [
                 {
                     alignment: 'right',
-                    image: formData.uploadLogoBlob
+                    image: formData.uploadLogoBlob,
+                    fit: [100, 100]
                 },
                 {
                     margin: [0, 5, 0, 0],
@@ -37,7 +38,7 @@ const docDefinition = () => {
                         widths: ['auto', '*'],
                         heights: [30, 10],
                         body: [
-                            ['Исполнитель:', 'Индивидуальный предприниматель'+ formData.performer],
+                            ['Исполнитель:', 'Индивидуальный предприниматель '+ formData.performer],
                             ['Заказчик:', formData.nameCompanyClient],
                         ]
                     }
@@ -359,22 +360,26 @@ const docDefinition = () => {
                 {
                     image: formData.uploadSignaturePerformerBlob,
                     opacity: 0.2,
+                    fit: [100, 100],
                     absolutePosition: {x: 70, y: 500}
                 },
                 {
                     image: formData.uploadSealPerformerBlob,
                     opacity: 0.2,
+                    fit: [100, 100],
                     absolutePosition: {x: 70, y: 500}
                 },
 
                 {
                     image: formData.uploadSignatureClientBlob,
                     opacity: 0.2,
+                    fit: [100, 100],
                     absolutePosition: {x: 300, y: 500}
                 },
                 {
                     image: formData.uploadSealClientBlob,
                     opacity: 0.2,
+                    fit: [100, 100],
                     absolutePosition: {x: 300, y: 500}
                 },
             ]

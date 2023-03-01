@@ -61,7 +61,7 @@
                 </CRow>
             </CContainer>
         </CTabPane>
-        <CContainer>
+        <CContainer style="margin-top: 20px">
             <CRow class="justify-content-center">
                 <CCol xs="12" sm="10" md="8" lg="6" xl="4">
                     <p v-if="countValid === 0" class="fw-light">Заполните все поля для перехода к следующему пункту</p>
@@ -70,7 +70,7 @@
                         <a
                             v-if="tabPaneActiveKey !== countValid+1"
                             href="javascript:void(0);"
-                            class="link-dark"
+                            class="link-info"
                             @click="() => {tabPaneActiveKey = countValid+1}"
                         >
                             перейдите к следующему</a>
@@ -92,7 +92,7 @@ import {pdf} from "./composables/generatePdf.js";
 import {useFormStore} from "./store.js"
 
 
-const tabPaneActiveKey = ref(1)
+const tabPaneActiveKey = ref(2)
 const valid = reactive([false, false, false])
 const disabled = reactive([true, true])
 const countValid = ref(0)
