@@ -130,7 +130,7 @@ import {CForm, CFormInput} from "@coreui/vue";
 import {reactive, watch} from "vue";
 import {email, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import {useFormStore} from "../stores/form.js";
+import {useFormStore} from "../store.js";
 import getFileBlob from "../composables/getFileBlob.js";
 
 const { AddOrChangePartForm } = useFormStore()

@@ -12,43 +12,27 @@
   "dependencies": {
     "@coreui/coreui": "^4.2.6",
     "@coreui/vue": "^4.7.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/compiler-sfc": "^3.2.6",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "bootstrap": "^5.2.3",
     "pdfmake": "^0.2.7",
     "pinia": "^2.0.32",
-    "vue": "^3.2.45",
-    "@vue/compiler-sfc": "^3.2.6",
+    "prettier": "2.3.2",
+    "sass": "^1.58.3",
     "vite": "^4.1.0",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "vue": "^3.2.45",
+    "vue-dadata": "3.0.0-beta.9",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-config-standard-with-typescript": "^34.0.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.6.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-vue": "^9.9.0",
-    "typescript": "^4.9.5",
-    "vue-eslint-parser": "^9.1.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "plugin:prettier/recommended",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-airbnb": "^7.0.0",
+    "eslint": "^8.35.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "typescript": "^4.9.5"
   }
 }

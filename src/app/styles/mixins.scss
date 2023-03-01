@@ -1,0 +1,10 @@
+@mixin allCentred($direction){
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $direction;
+}
+
+@mixin transition{
+  transition: all 0.3s;
+}

@@ -85,10 +85,11 @@
 <script setup>
 import {CNav, CTabContent, CTabPane, CNavItem, CNavLink, CCol, CRow, CContainer, CButton} from "@coreui/vue";
 import {reactive, ref} from "vue";
-import FormPartFirst from "../components/FormPartFirst.vue";
-import FormPartSecond from "../components/FormPartSecond.vue";
-import FormPartThird from "../components/FormPartThird.vue";
-import {pdf} from "../composables/generatePdf.js";
+import FormPartFirst from "./components/FormPartFirst.vue";
+import FormPartSecond from "./components/FormPartSecond.vue";
+import FormPartThird from "./components/FormPartThird.vue";
+import {pdf} from "./composables/generatePdf.js";
+import {useFormStore} from "./store.js"
 
 
 const tabPaneActiveKey = ref(1)
@@ -96,8 +97,10 @@ const valid = reactive([false, false, false])
 const disabled = reactive([true, true])
 const countValid = ref(0)
 
+const store = useFormStore()
+
 const sendPdf = () => {
-    pdf("test").open()
+    pdf(store.getForm).open()
 }
 
 function validate(validItem) {
@@ -117,6 +120,10 @@ function validate(validItem) {
 </script>
 
 
-<style scoped>
+<style lang="scss">
+@import "../../app/index";
 
+#app {
+    color: $color1;
+}
 </style>

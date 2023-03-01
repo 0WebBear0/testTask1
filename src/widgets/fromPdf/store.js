@@ -8,7 +8,6 @@ export const useFormStore = defineStore('counter', {
         getForm: (state) => {
             const helperObject = {}
             for (let i = 0; i < state.form.length; i++) {
-                console.log("test")
                 Object.assign(helperObject, state.form[i])
             }
             return helperObject

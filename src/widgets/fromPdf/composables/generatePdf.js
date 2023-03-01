@@ -1,17 +1,15 @@
 import {createPdf} from "pdfmake/build/pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import {useFormStore} from '../stores/form.js'
 
 var formData = null
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-export const pdf = (data) => {
-    const {getForm} = useFormStore()
+export const pdf = (getForm) => {
     if (Object.keys(getForm).length > 0){
         formData = getForm
     }
-    return createPdf(docDefinition(data))
+    return createPdf(docDefinition("test.pdf"))
 }
 
 const docDefinition = () => {

@@ -1,14 +1,16 @@
 <template>
     <CForm class="align-items-start form-block">
-        <CFormInput
-            id="ActNumber"
-            label="Номер акта"
-            placeholder="12665"
-            v-model.trim="state.actNumber"
-            @change="v$.actNumber.$touch"
-            :valid="v$.actNumber.$dirty && !v$.actNumber.$error"
-            :invalid="v$.actNumber.$dirty && v$.actNumber.$error"
-        />
+        <InputWithDadata v-model="state.actNumber" :props-data="{name: 'address'}" :props-data-name="{valid: v$.actNumber}"/>
+<!--        <CFormInput-->
+<!--            name="vue-dadata-input"-->
+<!--            id="ActNumber"-->
+<!--            label="Номер акта"-->
+<!--            placeholder="12665"-->
+<!--            v-model.trim="state.actNumber"-->
+<!--            @change="v$.actNumber.$touch"-->
+<!--            :valid="v$.actNumber.$dirty && !v$.actNumber.$error"-->
+<!--            :invalid="v$.actNumber.$dirty && v$.actNumber.$error"-->
+<!--        />-->
         <CFormInput
             type="date"
             id="DateOfSigning"
@@ -61,12 +63,13 @@
 </template>
 
 <script setup>
-import {CForm, CFormInput} from "@coreui/vue";
-import useVuelidate from "@vuelidate/core";
-import {reactive, ref, watch} from "vue";
-import {required} from "@vuelidate/validators";
-import {useFormStore} from "../stores/form.js";
-import getFileBlob from "../composables/getFileBlob.js";
+import { CForm, CFormInput } from "@coreui/vue"
+import useVuelidate from "@vuelidate/core"
+import { onMounted, reactive, watch } from "vue"
+import { required } from "@vuelidate/validators"
+import { useFormStore } from "../store.js"
+import getFileBlob from "../composables/getFileBlob.js"
+import InputWithDadata from "../../../shared/UI/InputWithDadata.vue"
 
 const { AddOrChangePartForm } = useFormStore()
 
@@ -83,7 +86,7 @@ const state = reactive({
 })
 
 const blobs = reactive({
-    uploadLogoBlob: null
+    uploadLogoBlob: null,
 })
 
 //Правила валидации
@@ -99,10 +102,11 @@ const rules = {
 //Валидация объектов
 const v$ = useVuelidate(rules, state)
 
+
 //Преобразование изображений в Blob формат
 const addNormalImg = (event) => {
     // v$._value.uploadLogo.$touch(event)
-    getFileBlob(event).then((data)=>{
+    getFileBlob(event).then((data) => {
         blobs.uploadLogoBlob = data
         const copyState = state
         AddOrChangePartForm(0, Object.assign(copyState, blobs))
@@ -110,7 +114,11 @@ const addNormalImg = (event) => {
 }
 
 //Проверка на валидность всей формы этого компонента и запись в state
-watch(v$, ()=>{
+watch(v$, () => {
+  // validationStyle()
+  console.log("-------------")
+  // console.log(v$._value.actNumber.$dirty)
+  // console.log(v$._value.actNumber.$invalid)
     v$._value.$forceUpdate
     if (!v$._value.$invalid) {
         const copyState = state
