@@ -13,6 +13,7 @@ export const pdf = (getForm) => {
 }
 
 const docDefinition = () => {
+  console.log(formData)
     if (formData !== null){
         return {
             pageSize: 'A4',
