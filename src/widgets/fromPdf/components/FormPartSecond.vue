@@ -81,7 +81,7 @@
     <CFormInput
         id="PhonePerformer"
         label="Телефон исполнителя"
-        placeholder="8 000 000 0000"
+        placeholder="8(999) 999-9999"
         v-model.trim="state.phonePerformer"
         @change="v$.phonePerformer.$touch"
         :valid="v$.phonePerformer.$dirty && !v$.phonePerformer.$error"
@@ -124,11 +124,12 @@
 <script setup>
 import { CForm, CFormInput } from "@coreui/vue"
 import { reactive, watch } from "vue"
-import { required, email } from "@vuelidate/validators"
+import { required, email, minLength } from "@vuelidate/validators"
 import useVuelidate from "@vuelidate/core"
 import { useFormStore } from "../store.js"
 import getFileBlob from "../composables/getFileBlob.js"
 import InputWithDadata from "../../../shared/UI/InputWithDadata.vue"
+import { vueMaskPhone } from "../composables/vueMaskPhone.js"
 
 const { AddOrChangePartForm } = useFormStore()
 const emit = defineEmits(['isValid'])
@@ -166,16 +167,15 @@ const rules = {
   contractorsCorporatePerformer: { required },
   nameBankPerformer: { required },
   bikBankPerformer: { required },
-  phonePerformer: { required },
+  phonePerformer: { required, minLength: minLength(15) },
   namePerformer: { required },
   uploadSignaturePerformer: { required },
   uploadSealPerformer: { required },
 }
 
-const maskPhone = (e) => mask(e)
-
 //Валидация объектов
 const v$ = useVuelidate(rules, state)
+
 
 //Преобразование изображений в Blob формат
 const addNormalImgSeal = (event) => {
@@ -193,6 +193,16 @@ const addNormalImgSignature = (event) => {
   })
 }
 
+//Маска на телефоне
+watch(state, () => {
+  if (state.phonePerformer) {
+    maskPhone(state.phonePerformer)
+  }
+})
+
+const maskPhone = () => {
+  state.phonePerformer = vueMaskPhone(state.phonePerformer)
+}
 
 //Проверка на валидность всей формы этого компонента и запись в state
 watch(v$, () => {

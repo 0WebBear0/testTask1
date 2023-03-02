@@ -81,7 +81,7 @@
     <CFormInput
         id="PhoneClient"
         label="Телефон заказчика"
-        placeholder="8 000 000 0000"
+        placeholder="8(999) 999-9999"
         v-model.trim="state.phoneClient"
         @change="v$.phoneClient.$touch"
         :valid="v$.phoneClient.$dirty && !v$.phoneClient.$error"
@@ -124,11 +124,12 @@
 <script setup>
 import { CForm, CFormInput } from "@coreui/vue"
 import { reactive, watch } from "vue"
-import { email, required } from "@vuelidate/validators"
+import { email, minLength, required } from "@vuelidate/validators"
 import useVuelidate from "@vuelidate/core"
 import { useFormStore } from "../store.js"
 import getFileBlob from "../composables/getFileBlob.js"
 import InputWithDadata from "../../../shared/UI/InputWithDadata.vue"
+import { vueMaskPhone } from "../composables/vueMaskPhone.js"
 
 const { AddOrChangePartForm } = useFormStore()
 
@@ -166,7 +167,7 @@ const rules = {
   contractorsCorporateClient: { required },
   nameBankClient: { required },
   bikBankClient: { required },
-  phoneClient: { required },
+  phoneClient: { required, minLength: minLength(15) },
   nameClient: { required },
   uploadSignatureClient: { required },
   uploadSealClient: { required },
@@ -190,6 +191,16 @@ const addNormalImgSignature = (event) => {
   })
 }
 
+//Маска на телефоне
+watch(state, () => {
+  if (state.phoneClient) {
+    maskPhone(state.phoneClient)
+  }
+})
+
+const maskPhone = () => {
+  state.phoneClient = vueMaskPhone(state.phoneClient)
+}
 
 //Проверка на валидность всей формы этого компонента и запись в state
 watch(v$, () => {

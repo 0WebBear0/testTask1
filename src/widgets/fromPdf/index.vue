@@ -92,7 +92,7 @@ import {pdf} from "./composables/generatePdf.js";
 import {useFormStore} from "./store.js"
 
 
-const tabPaneActiveKey = ref(2)
+const tabPaneActiveKey = ref(3)
 const valid = reactive([false, false, false])
 const disabled = reactive([true, true])
 const countValid = ref(0)

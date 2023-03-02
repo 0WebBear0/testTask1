@@ -8,6 +8,7 @@
         :placeholder="propsData?.placeholder"
         v-model="inputModel"
         @input="$emit('update:modelValue', $event.target.value)"
+        @change="validationStyle"
         token="ba90b98936aa77c4c9712c5f3bdeac5762b463fe">
     </vue-dadata>
   </div>
@@ -22,15 +23,8 @@ const props = defineProps(['propsData', 'propsDataName'])
 const inputModel = ref('')
 const isDirty = ref(false)
 
-watch(props, (data)=> {
-  validationStyle()
-})
 const validationStyle = () => {
   const nameEl =  document.getElementsByName(props.propsData.name)
-  // console.log(props.propsDataName.valid)
-  // console.log(props.propsDataName.valid?.$dirty)
-  // console.log(props.propsDataName.valid?.$invalid)
-  // console.log(isDirty.value)
   if (isDirty.value){
     if (!props.propsDataName.valid.$invalid){
       nameEl[0].classList.remove('is-invalid')
