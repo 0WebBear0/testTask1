@@ -113,7 +113,6 @@ const addNormalImg = (event) => {
 
 //Проверка на валидность всей формы этого компонента и запись в state
 watch(v$, () => {
-  console.log("-------------")
     v$._value.$forceUpdate
     if (!v$._value.$invalid) {
         const copyState = state

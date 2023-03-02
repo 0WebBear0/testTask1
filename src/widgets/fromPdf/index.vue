@@ -103,7 +103,7 @@ const store = useFormStore()
 
 const sendPdf = () => {
   const pdfFile = pdf(store.getForm)
-  pdfFile.open()
+  pdf(store.getForm).open()
   console.log(pdfFile)
   pdfFile.getBase64((data) => {
     axios.post('http://localhost:3000/',
