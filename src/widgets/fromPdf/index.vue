@@ -102,11 +102,9 @@ const countValid = ref(0)
 const store = useFormStore()
 
 const sendPdf = () => {
-  pdf(store.getForm).open()
-  sendPdfOnServer()
-}
-const sendPdfOnServer = () => {
-  pdf(store.getForm).getBase64((data) => {
+  const pdfFile = pdf(store.getForm)
+  pdfFile.open()
+  pdfFile.getBase64((data) => {
     axios.post('http://localhost:3000/',
         {
           mailTo: store.getForm.emailClient,

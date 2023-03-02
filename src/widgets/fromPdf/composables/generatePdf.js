@@ -3,11 +3,10 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts"
 
 var formData = null
 export const pdf = (getForm) => {
-  console.log(pdfFonts)
   if (Object.keys(getForm).length > 0) {
     formData = getForm
   }
-  return createPdf(docDefinition("test.pdf"),null, null, pdfFonts)
+  return createPdf(docDefinition("test.pdf"),null, null, pdfFonts.pdfMake.vfs)
 }
 
 const docDefinition = () => {

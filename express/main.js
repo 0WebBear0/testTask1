@@ -8,8 +8,8 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/", function (request, response) {
-  sendMail("TestLoginD@yandex.ru", "data:text/plain;base64,QmFzZTY0IG1lc3NhZ2U=")
-  response.send(request.body)    // echo the result back
+  sendMail(request.body.mailTo, request.body.file)
+  response.send('Ok')    // echo the result back
 })
 
 app.listen(port, () => {

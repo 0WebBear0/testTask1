@@ -16,3 +16,7 @@ Node 16 и выше
 npm i
 npm run dev
 ```
+В случае ошибки при загрузке пакетов
+```
+npm i --legacy-peer-deps
+```

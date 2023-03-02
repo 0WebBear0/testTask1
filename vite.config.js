@@ -21,10 +21,10 @@ export default defineConfig({
     },
   },
   host: true,
-  port: 80,
-  hmr: {
-    port: 80,
+  watch: {
+    usePolling: true
   },
+  port: 80,
   server: {
     port: 80,
   },
