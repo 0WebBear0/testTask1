@@ -1,26 +1,34 @@
-import { fileURLToPath } from 'url'
-import {defineConfig} from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { fileURLToPath } from "url"
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [
-        vue(),
-    ],
-    requireConfigFile: false,
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-        },
+  plugins: [
+    vue(),
+  ],
+  requireConfigFile: false,
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: `@import "@/app/index.scss";`,
-            },
-        },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/app/index.scss";`,
+      },
     },
-    server: {
-        port: 80,
-    },
+  },
+  host: true,
+  port: 80,
+  hmr: {
+    port: 80,
+  },
+  server: {
+    port: 80,
+  },
+  preview: {
+    port: 80,
+  },
 })
