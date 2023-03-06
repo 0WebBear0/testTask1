@@ -106,7 +106,7 @@ const sendPdf = async () => {
   const pdfFile = pdf(store.getForm)
   pdfFile.open()
   pdfFile.getBase64((data) => {
-    axios.post('http://localhost:3000/',
+    axios.post('http://80.78.240.28:3000/',
         {
           mailTo: store.getForm.emailClient,
           file: data,
