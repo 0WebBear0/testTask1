@@ -23,6 +23,7 @@
         id="InnPerformer"
         label="ИНН исполнителя"
         placeholder="366300190960"
+        maxlength="12"
         v-model.trim="state.innPerformer"
         @change="v$.innPerformer.$touch"
         :valid="v$.innPerformer.$dirty && !v$.innPerformer.$error"
@@ -32,6 +33,7 @@
         id="KppPerformer"
         label="КПП исполнителя"
         placeholder="770201001"
+        maxlength="9"
         v-model.trim="state.kppPerformer"
         @change="v$.kppPerformer.$touch"
         :valid="v$.kppPerformer.$dirty && !v$.kppPerformer.$error"
@@ -46,6 +48,7 @@
         id="ContractorsPerformer"
         label="Расчетный счет исполнителя"
         placeholder="40817810099910004312"
+        maxlength="20"
         v-model.trim="state.contractorsPerformer"
         @change="v$.contractorsPerformer.$touch"
         :valid="v$.contractorsPerformer.$dirty && !v$.contractorsPerformer.$error"
@@ -55,6 +58,7 @@
         id="ContractorsCorporatePerformer"
         label="Корпоративный счет исполнителя"
         placeholder="00000000000000000000"
+        maxlength="20"
         v-model.trim="state.contractorsCorporatePerformer"
         @change="v$.contractorsCorporatePerformer.$touch"
         :valid="v$.contractorsCorporatePerformer.$dirty && !v$.contractorsCorporatePerformer.$error"
@@ -73,6 +77,7 @@
         id="BikBankPerformer"
         label="БИК банка исполнителя"
         placeholder="044525974"
+        maxlength="9"
         v-model.trim="state.bikBankPerformer"
         @change="v$.bikBankPerformer.$touch"
         :valid="v$.bikBankPerformer.$dirty && !v$.bikBankPerformer.$error"
@@ -124,12 +129,13 @@
 <script setup>
 import { CForm, CFormInput } from "@coreui/vue"
 import { reactive, watch } from "vue"
-import { required, email, minLength } from "@vuelidate/validators"
+import { required, email, minLength, between, numeric, maxLength } from "@vuelidate/validators"
 import useVuelidate from "@vuelidate/core"
 import { useFormStore } from "../store.js"
 import getFileBlob from "../composables/getFileBlob.js"
 import InputWithDadata from "../../../shared/UI/InputWithDadata.vue"
 import { vueMaskPhone } from "../composables/vueMaskPhone.js"
+import { wordsRuEnNumber } from "../composables/validation.js"
 
 const { AddOrChangePartForm } = useFormStore()
 const emit = defineEmits(['isValid'])
@@ -158,17 +164,17 @@ const blobs = reactive({
 
 //Правила валидации
 const rules = {
-  nameCompanyPerformer: { required },
+  nameCompanyPerformer: { required, wordsRuEnNumber },
   emailPerformer: { required, email },
-  innPerformer: { required },
-  kppPerformer: { required },
-  addressPerformer: { required },
-  contractorsPerformer: { required },
-  contractorsCorporatePerformer: { required },
-  nameBankPerformer: { required },
-  bikBankPerformer: { required },
+  innPerformer: { required, numeric, maxLength: maxLength( 12), minLength: minLength( 10)  },
+  kppPerformer: { required, wordsRuEnNumber, maxLength: maxLength( 9), minLength: minLength( 9) },
+  addressPerformer: { required, wordsRuEnNumber },
+  contractorsPerformer: { required, numeric, maxLength: maxLength( 20), minLength: minLength( 20) },
+  contractorsCorporatePerformer: { required, numeric, maxLength: maxLength( 20), minLength: minLength( 20) },
+  nameBankPerformer: { required, wordsRuEnNumber },
+  bikBankPerformer: { required, wordsRuEnNumber, maxLength: maxLength( 9), minLength: minLength( 9) },
   phonePerformer: { required, minLength: minLength(15) },
-  namePerformer: { required },
+  namePerformer: { required, wordsRuEnNumber },
   uploadSignaturePerformer: { required },
   uploadSealPerformer: { required },
 }
@@ -210,8 +216,7 @@ watch(v$, () => {
   if (!v$._value.$invalid) {
     AddOrChangePartForm(1, Object.assign(state, blobs))
     emit('isValid', true)
-  }
-  else emit('isValid', false)
+  } else emit('isValid', false)
 })
 </script>
 

@@ -23,6 +23,7 @@
         id="InnClient"
         label="ИНН заказчика"
         placeholder="366300190960"
+        maxlength="12"
         v-model.trim="state.innClient"
         @change="v$.innClient.$touch"
         :valid="v$.innClient.$dirty && !v$.innClient.$error"
@@ -32,6 +33,7 @@
         id="KppClient"
         label="КПП заказчика"
         placeholder="770201001"
+        maxlength="9"
         v-model.trim="state.kppClient"
         @change="v$.kppClient.$touch"
         :valid="v$.kppClient.$dirty && !v$.kppClient.$error"
@@ -46,6 +48,7 @@
         id="ContractorsClient"
         label="Расчетный счет заказчика"
         placeholder="40817810099910004312"
+        maxlength="20"
         v-model.trim="state.contractorsClient"
         @change="v$.contractorsClient.$touch"
         :valid="v$.contractorsClient.$dirty && !v$.contractorsClient.$error"
@@ -55,6 +58,7 @@
         id="ContractorsCorporateClient"
         label="Корпоративный счет заказчика"
         placeholder="00000000000000000000"
+        maxlength="20"
         v-model.trim="state.contractorsCorporateClient"
         @change="v$.contractorsCorporateClient.$touch"
         :valid="v$.contractorsCorporateClient.$dirty && !v$.contractorsCorporateClient.$error"
@@ -73,6 +77,7 @@
         id="BikBankClient"
         label="БИК банка заказчика"
         placeholder="044525974"
+        maxlength="9"
         v-model.trim="state.bikBankClient"
         @change="v$.bikBankClient.$touch"
         :valid="v$.bikBankClient.$dirty && !v$.bikBankClient.$error"
@@ -124,12 +129,13 @@
 <script setup>
 import { CForm, CFormInput } from "@coreui/vue"
 import { reactive, watch } from "vue"
-import { email, minLength, required } from "@vuelidate/validators"
+import { between, email, maxLength, minLength, numeric, required } from "@vuelidate/validators"
 import useVuelidate from "@vuelidate/core"
 import { useFormStore } from "../store.js"
 import getFileBlob from "../composables/getFileBlob.js"
 import InputWithDadata from "../../../shared/UI/InputWithDadata.vue"
 import { vueMaskPhone } from "../composables/vueMaskPhone.js"
+import { wordsRuEnNumber } from "../composables/validation.js"
 
 const { AddOrChangePartForm } = useFormStore()
 
@@ -158,17 +164,17 @@ const blobs = reactive({
 
 //Правила валидации
 const rules = {
-  nameCompanyClient: { required },
+  nameCompanyClient: { required, wordsRuEnNumber },
   emailClient: { required, email },
-  innClient: { required },
-  kppClient: { required },
-  addressClient: { required },
-  contractorsClient: { required },
-  contractorsCorporateClient: { required },
-  nameBankClient: { required },
-  bikBankClient: { required },
+  innClient: { required, numeric, maxLength: maxLength( 12), minLength: minLength( 10) },
+  kppClient: { required, wordsRuEnNumber, maxLength: maxLength( 9), minLength: minLength( 9) },
+  addressClient: { required, wordsRuEnNumber },
+  contractorsClient: { required, wordsRuEnNumber, maxLength: maxLength( 20), minLength: minLength( 20)  },
+  contractorsCorporateClient: { required, wordsRuEnNumber, maxLength: maxLength( 20), minLength: minLength( 20)  },
+  nameBankClient: { required, wordsRuEnNumber },
+  bikBankClient: { required, wordsRuEnNumber, maxLength: maxLength( 9), minLength: minLength( 9)  },
   phoneClient: { required, minLength: minLength(15) },
-  nameClient: { required },
+  nameClient: { required, wordsRuEnNumber },
   uploadSignatureClient: { required },
   uploadSealClient: { required },
 }
@@ -208,8 +214,7 @@ watch(v$, () => {
   if (!v$._value.$invalid) {
     AddOrChangePartForm(2, Object.assign(state, blobs))
     emit('isValid', true)
-  }
-  else emit('isValid', false)
+  } else emit('isValid', false)
 })
 </script>
 

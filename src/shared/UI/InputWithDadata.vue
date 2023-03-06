@@ -23,6 +23,12 @@ const props = defineProps(['propsData', 'propsDataName'])
 const inputModel = ref('')
 const isDirty = ref(false)
 
+const emit = defineEmits(['update:modelValue'])
+
+watch(inputModel, () => {
+  emit('update:modelValue',inputModel.value)
+})
+
 const validationStyle = () => {
   const nameEl =  document.getElementsByName(props.propsData.name)
   if (isDirty.value){

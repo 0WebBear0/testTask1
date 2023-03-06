@@ -124,18 +124,14 @@ const sendPdf = async () => {
 
 function validate(validData, validItem) {
   if (validItem === 1 && validData) {
-    if (valid[0] !== true) {
-      valid[0] = true
-      disabled[0] = false
-      countValid.value = 1
-    }
+    valid[0] = true
+    disabled[0] = false
+    countValid.value = 1
     isValidAll()
   } else if (validItem === 2 && validData) {
-    if (valid[1] !== true) {
-      valid[1] = true
-      disabled[1] = false
-      countValid.value = 2
-    }
+    valid[1] = true
+    disabled[1] = false
+    countValid.value = 2
     isValidAll()
   } else if (validItem === 3 && validData) {
     valid[2] = true

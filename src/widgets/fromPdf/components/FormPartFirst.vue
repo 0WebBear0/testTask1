@@ -65,9 +65,10 @@
 import { CForm, CFormInput } from "@coreui/vue"
 import useVuelidate from "@vuelidate/core"
 import { onMounted, reactive, watch } from "vue"
-import { required, minValue } from "@vuelidate/validators"
+import { required, minValue, numeric } from "@vuelidate/validators"
 import { useFormStore } from "../store.js"
 import getFileBlob from "../composables/getFileBlob.js"
+import { wordsRuEnNumber } from "../composables/validation.js"
 
 const { AddOrChangePartForm } = useFormStore()
 
@@ -87,13 +88,22 @@ const blobs = reactive({
   uploadLogoBlob: null,
 })
 
+// Валидация даты
+const dateValidation = (value) => {
+  let dateSelected = new Date(value)
+  if (dateSelected.getFullYear() > 2023){
+    return false
+  }
+  return dateSelected.getFullYear() >= 2000;
+}
+
 //Правила валидации
 const rules = {
-  actNumber: { required },
-  dateOfSigning: { required },
-  performer: { required },
-  serviceName: { required },
-  costOfWork: { required, minValue: minValue(0) },
+  actNumber: { required, wordsRuEnNumber },
+  dateOfSigning: { required, dateValidation },
+  performer: { required, wordsRuEnNumber },
+  serviceName: { required, wordsRuEnNumber },
+  costOfWork: { required, minValue: minValue(0), numeric },
   uploadLogo: { required },
 }
 
@@ -116,7 +126,7 @@ watch(v$, () => {
   v$._value.$forceUpdate
 
   if (!v$._value.$invalid) {
-    let objectDate = new Date(state.dateOfSigning);
+    let objectDate = new Date(state.dateOfSigning)
     const copyState = {}
     Object.assign(copyState, state)
     copyState.dateOfSigning = objectDate.toLocaleDateString()
