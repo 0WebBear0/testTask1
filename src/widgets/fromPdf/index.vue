@@ -38,7 +38,7 @@
       <CContainer>
         <CRow class="justify-content-center">
           <CCol xs="12" sm="10" md="8" lg="6" xl="4">
-            <FormPartFirst @is-valid="validate(1)"/>
+            <FormPartFirst @is-valid="(data)=>{validate(data, 1)}"/>
           </CCol>
         </CRow>
       </CContainer>
@@ -47,7 +47,7 @@
       <CContainer>
         <CRow class="justify-content-center">
           <CCol xs="12" sm="10" md="8" lg="6" xl="4">
-            <FormPartSecond @is-valid="validate(2)"/>
+            <FormPartSecond @is-valid="(data)=>{validate(data, 2)}"/>
           </CCol>
         </CRow>
       </CContainer>
@@ -56,7 +56,7 @@
       <CContainer>
         <CRow class="justify-content-center">
           <CCol xs="12" sm="10" md="8" lg="6" xl="4">
-            <FormPartThird @is-valid="validate(3)"/>
+            <FormPartThird @is-valid="(data)=>{validate(data, 3)}"/>
           </CCol>
         </CRow>
       </CContainer>
@@ -65,6 +65,8 @@
       <CRow class="justify-content-center">
         <CCol xs="12" sm="10" md="8" lg="6" xl="4">
           <p v-if="countValid === 0" class="fw-light">Заполните все поля для перехода к следующему пункту</p>
+          <CButton v-else-if="validAll" color="secondary" class="mt-4 mb-5" @click="sendPdf">Отправить документ
+          </CButton>
           <p v-else-if="countValid < valid.length" class="fw-light">
             Заполнено ({{ countValid }} из {{ valid.length }} пунктов)
             <a
@@ -75,8 +77,6 @@
             >
               перейдите к следующему</a>
           </p>
-          <CButton v-if="countValid === 3" color="secondary" class="mt-4 mb-5" @click="sendPdf">Отправить документ
-          </CButton>
         </CCol>
       </CRow>
     </CContainer>
@@ -98,10 +98,11 @@ const tabPaneActiveKey = ref(1)
 const valid = reactive([false, false, false])
 const disabled = reactive([true, true])
 const countValid = ref(0)
+const validAll = ref(false)
 
 const store = useFormStore()
 
-const sendPdf = () => {
+const sendPdf = async () => {
   const pdfFile = pdf(store.getForm)
   pdfFile.open()
   pdfFile.getBase64((data) => {
@@ -110,25 +111,49 @@ const sendPdf = () => {
           mailTo: store.getForm.emailClient,
           file: data,
         },
-    ).then(() => {
-      alert("Сообщение отправлено!")
-    })
+    )
+        .then(() => {
+          alert("Сообщение отправлено!")
+          setTimeout(() => location.reload(), 1000)
+        })
+        .catch(() => {
+          alert("Ошибка сервера!")
+        })
   })
 }
 
-function validate(validItem) {
-  if (validItem === 1) {
-    valid[0] = true
-    disabled[0] = false
-    countValid.value = 1
-  } else if (validItem === 2) {
-    valid[1] = true
-    disabled[1] = false
-    countValid.value = 2
-  } else {
+function validate(validData, validItem) {
+  if (validItem === 1 && validData) {
+    if (valid[0] !== true) {
+      valid[0] = true
+      disabled[0] = false
+      countValid.value = 1
+    }
+    isValidAll()
+  } else if (validItem === 2 && validData) {
+    if (valid[1] !== true) {
+      valid[1] = true
+      disabled[1] = false
+      countValid.value = 2
+    }
+    isValidAll()
+  } else if (validItem === 3 && validData) {
     valid[2] = true
     countValid.value = 3
+    isValidAll()
+  } else {
+    valid[validItem - 1] = false
+    countValid.value = 0
+    isValidAll()
   }
+}
+
+function isValidAll() {
+  let counterValid = 0
+  for (let isValid of valid) {
+    if (isValid) counterValid++
+  }
+  validAll.value = counterValid === valid.length
 }
 </script>
 

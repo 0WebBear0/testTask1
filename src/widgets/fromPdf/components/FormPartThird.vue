@@ -209,6 +209,7 @@ watch(v$, () => {
     AddOrChangePartForm(2, Object.assign(state, blobs))
     emit('isValid', true)
   }
+  else emit('isValid', false)
 })
 </script>
 
